@@ -1,28 +1,42 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Route } from 'react-router-dom';
 import './App.css';
 
-class App extends Component {
-  render() {
+import { getLocations } from './adapter'
+
+import Locations from './components/Locations'
+import Graph from './components/Graph'
+
+
+export default class extends Component {
+
+  state = {
+    locations: []
+  }
+
+  componentDidMount(){
+    getLocations(data => {
+      this.setState({ locations: data });
+    });
+  }
+
+  renderLocation = (renderProps) => {
+    const stub = renderProps.match.params.location.toLowerCase();
+    const location = this.state.locations.find(location => location.name.toLowerCase() == stub)
+    if (location)
+      return <Graph location={ location } />
+    else
+      return <React.Fragment />
+  }
+
+  render(){
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <React.Fragment>
+        <h1>Temperature TCF</h1>
+        <Locations locations={ this.state.locations } />
+        <Route path="/:location" render={ this.renderLocation } />
+      </React.Fragment>
     );
   }
-}
 
-export default App;
+}
