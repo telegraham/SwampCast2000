@@ -10,7 +10,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import { API_WS_ROOT } from './adapter'
 
 ReactDOM.render(<ActionCableProvider url={API_WS_ROOT}>
-      <Router basename={ process.env.PUBLIC_URL }>
+      <Router>
         <App />
       </Router>
     </ActionCableProvider>, document.getElementById('root'));

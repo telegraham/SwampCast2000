@@ -1,5 +1,8 @@
-const API_ROOT = 'https://tempapi-backend.herokuapp.com';
-export const API_WS_ROOT = 'wss://tempapi-backend.herokuapp.com/cable';
+
+const BASE_URL = process.env.REACT_APP_API_URL
+
+const API_ROOT = `http://${ BASE_URL }`;
+export const API_WS_ROOT = `ws://${ BASE_URL }/cable`;
 // const HEADERS = {
 //   'Content-Type': 'application/json',
 //   Accept: 'application/json',
