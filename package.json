@@ -1,5 +1,6 @@
 {
   "name": "tempgraphi",
+  "homepage" : "http://www.fuckyeahgtj.com/tempgraphi",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
