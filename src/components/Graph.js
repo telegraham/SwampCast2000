@@ -15,17 +15,17 @@ export default class extends Component {
   }
 
   componentDidUpdate(){
-    if (this.props.location.id !== this.state.locationId)
+    if (this.props.location.slug !== this.state.locationSlug)
       this.setReadings()
   }
 
   setReadings(){
-    const { id } = this.props.location;
+    const { slug } = this.props.location;
     // console.log(this.state)
-    getReadings(id, (data) => {
+    getReadings(slug, (data) => {
       // console.log(data)
       this.setState({
-        locationId: id,
+        locationSlug: slug,
         readings: data
       })
     })
@@ -68,7 +68,7 @@ export default class extends Component {
       </h2>
       <ActionCable
         key={ location.id }  
-        channel={{ channel: 'ReadingsChannel', location: location.id }}
+        channel={{ channel: 'ReadingsChannel', location: location.slug }}
         onReceived={this.handleReceivedReading}
       />
       <XYPlot height={300} width={300}>

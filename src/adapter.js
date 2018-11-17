@@ -13,8 +13,8 @@ export function getLocations(callback) {
     .then(callback);
 }
 
-export function getReadings(locationId, callback) {
-  fetch(`${ API_ROOT }/locations/${ locationId }/readings`)
+export function getReadings(locationSlug, callback) {
+  fetch(`${ API_ROOT }/locations/${ locationSlug }/readings`)
     .then(res => res.json())
     .then(callback);
 }

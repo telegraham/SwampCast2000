@@ -21,8 +21,8 @@ export default class extends Component {
   }
 
   renderLocation = (renderProps) => {
-    const stub = renderProps.match.params.location.toLowerCase();
-    const location = this.state.locations.find(location => location.name.toLowerCase() === stub)
+    const slug = renderProps.match.params.locationSlug;
+    const location = this.state.locations.find(location => location.slug === slug)
     if (location)
       return <Graph location={ location } />
     else
@@ -34,7 +34,7 @@ export default class extends Component {
       <React.Fragment>
         <h1>Temperature TCF</h1>
         <Locations locations={ this.state.locations } />
-        <Route path="/:location" render={ this.renderLocation } />
+        <Route path="/:locationSlug" render={ this.renderLocation } />
       </React.Fragment>
     );
   }
