@@ -1,5 +1,5 @@
 const API_ROOT = 'https://tempapi-backend.herokuapp.com';
-export const API_WS_ROOT = 'ws://tempapi-backend.herokuapp.com/cable';
+export const API_WS_ROOT = 'wss://tempapi-backend.herokuapp.com/cable';
 // const HEADERS = {
 //   'Content-Type': 'application/json',
 //   Accept: 'application/json',
