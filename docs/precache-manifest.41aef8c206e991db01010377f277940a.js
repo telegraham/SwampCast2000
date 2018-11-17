@@ -4,15 +4,15 @@ self.__precacheManifest = [
     "url": "/tempgraphi/static/js/runtime~main.ecfcf415.js"
   },
   {
-    "revision": "922ceba7d8c10ee8cadf",
-    "url": "/tempgraphi/static/js/main.922ceba7.chunk.js"
+    "revision": "c4ae6dfec1eb1898eb06",
+    "url": "/tempgraphi/static/js/main.c4ae6dfe.chunk.js"
   },
   {
     "revision": "42ce6c47a33e0ed8974a",
     "url": "/tempgraphi/static/js/1.42ce6c47.chunk.js"
   },
   {
-    "revision": "922ceba7d8c10ee8cadf",
+    "revision": "c4ae6dfec1eb1898eb06",
     "url": "/tempgraphi/static/css/main.e25da5a0.chunk.css"
   },
   {
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/tempgraphi/static/css/1.ad440a1c.chunk.css"
   },
   {
-    "revision": "403bd918eb857431a3a97f98f90e1faa",
+    "revision": "fc0e1c77210e2fba574cf4c5c1cde12a",
     "url": "/tempgraphi/index.html"
   }
 ];

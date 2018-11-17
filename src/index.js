@@ -10,7 +10,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { API_WS_ROOT } from './adapter'
 
 ReactDOM.render(<ActionCableProvider url={API_WS_ROOT}>
-      <Router>
+      <Router basename={ process.env.PUBLIC_URL }>
         <App />
       </Router>
     </ActionCableProvider>, document.getElementById('root'));
