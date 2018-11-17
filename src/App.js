@@ -22,7 +22,7 @@ export default class extends Component {
 
   renderLocation = (renderProps) => {
     const stub = renderProps.match.params.location.toLowerCase();
-    const location = this.state.locations.find(location => location.name.toLowerCase() == stub)
+    const location = this.state.locations.find(location => location.name.toLowerCase() === stub)
     if (location)
       return <Graph location={ location } />
     else

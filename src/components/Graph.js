@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { getReadings } from '../adapter'
-import { LineChart, XAxis, YAxis, CartesianGrid, Line } from 'recharts';
+import { ActionCable } from 'react-actioncable-provider';
+import '../../node_modules/react-vis/dist/style.css';
+import {XYPlot, LineSeries} from 'react-vis';
 
 export default class extends Component {
 
@@ -30,14 +32,17 @@ export default class extends Component {
   }
 
   processedData(){
+    console.log("pd")
     // console.log(this.state.readings.map(reading => Date.parse(reading.time)))
     return this.state.readings
       .filter(reading => Date.parse(reading.time) > 1542253140000)
       .reduce((accumulator, reading) => {
         reading.data.forEach(datum => {
           accumulator.push({
-            ...datum,
-            dt: Date.parse(reading.time) + datum.seconds
+            // ...datum,
+            // dt: Date.parse(reading.time) + datum.seconds
+            y: datum.temperature,
+            x: Date.parse(reading.time) + datum.seconds
           })
         })
         return accumulator;
@@ -48,18 +53,27 @@ export default class extends Component {
     return new Date(huh).toLocaleString()
   }
 
+  handleReceivedReading = (reading) => {
+    this.setState({
+      readings: [ ...this.state.readings, reading ]
+    })
+  }
+
   render(){
+    console.log(this.state.readings.length)
+    const { location } = this.props
     return <section>
       <h2>
         { this.props.location.name }
       </h2>
-      <LineChart width={800} height={600} data={ this.processedData() }>
-        <XAxis dataKey="dt" tickFormatter={ this.formatXAxis } tickCount={ 10 } />
-        <YAxis/>
-        <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
-        <Line type="monotone" dataKey="temperature" stroke="#8884d8" />
-        <Line type="monotone" dataKey="humidity" stroke="#82ca9d" />
-      </LineChart>
+      <ActionCable
+        key={ location.id }  
+        channel={{ channel: 'ReadingsChannel', location: location.id }}
+        onReceived={this.handleReceivedReading}
+      />
+      <XYPlot height={300} width={300}>
+        <LineSeries data={ this.processedData() } />
+      </XYPlot>
     </section>
   }
 }
