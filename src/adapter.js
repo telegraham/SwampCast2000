@@ -1,8 +1,7 @@
 
-const BASE_URL = process.env.REACT_APP_API_URL
+const API_ROOT = process.env.REACT_APP_API_URL
+export const API_WS_ROOT = process.env.REACT_APP_SOCKET_URL;
 
-const API_ROOT = `http://${ BASE_URL }`;
-export const API_WS_ROOT = `ws://${ BASE_URL }/cable`;
 // const HEADERS = {
 //   'Content-Type': 'application/json',
 //   Accept: 'application/json',
