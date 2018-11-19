@@ -1,79 +1,50 @@
-import React, { Component } from 'react';
-import { getReadings } from '../adapter'
-import { ActionCable } from 'react-actioncable-provider';
-import '../../node_modules/react-vis/dist/style.css';
-import {XYPlot, LineSeries} from 'react-vis';
+import React from 'react'
+import { VictoryChart, VictoryLine, VictoryScatter, VictoryAxis } from 'victory'
+import timeAgo from 'time-ago'
 
-export default class extends Component {
-
-  state = {
-    readings: []
-  }
-
-  componentDidMount(){
-    this.setReadings()
-  }
-
-  componentDidUpdate(){
-    if (this.props.location.slug !== this.state.locationSlug)
-      this.setReadings()
-  }
-
-  setReadings(){
-    const { slug } = this.props.location;
-    // console.log(this.state)
-    getReadings(slug, (data) => {
-      // console.log(data)
-      this.setState({
-        locationSlug: slug,
-        readings: data
-      })
-    })
-  }
-
-  processedData(){
-    console.log("pd")
-    // console.log(this.state.readings.map(reading => Date.parse(reading.time)))
-    return this.state.readings
-      .filter(reading => Date.parse(reading.time) > 1542253140000)
-      .reduce((accumulator, reading) => {
-        reading.data.forEach(datum => {
-          accumulator.push({
-            // ...datum,
-            // dt: Date.parse(reading.time) + datum.seconds
-            y: datum.temperature,
-            x: Date.parse(reading.time) + datum.seconds
-          })
-        })
-        return accumulator;
-      }, [])
-  }
-
-  formatXAxis(huh) {
-    return new Date(huh).toLocaleString()
-  }
-
-  handleReceivedReading = (reading) => {
-    this.setState({
-      readings: [ ...this.state.readings, reading ]
-    })
-  }
-
-  render(){
-    console.log(this.state.readings.length)
-    const { location } = this.props
-    return <section>
-      <h2>
-        { this.props.location.name }
-      </h2>
-      <ActionCable
-        key={ location.id }  
-        channel={{ channel: 'ReadingsChannel', location: location.slug }}
-        onReceived={this.handleReceivedReading}
-      />
-      <XYPlot height={300} width={300}>
-        <LineSeries data={ this.processedData() } />
-      </XYPlot>
-    </section>
-  }
+const xTick = (tick) => { 
+  const difference = new Date() - tick;
+  return difference < 5 * 1000 ? "now" :timeAgo.ago(tick, false) + " ago" 
 }
+
+const tickValues = () => {
+  const now = new Date().getTime()
+  return [5, 4, 3, 2, 1, 0].map((minutesAgo) => {
+    return now - minutesAgo * 60 * 1000;
+  })
+}
+
+export default props => (<VictoryChart height={390} >
+            <VictoryAxis 
+              label="Time"
+              scale="time"
+              tickFormat={ xTick }
+              tickValues={ tickValues() }
+              style={{ axisLabel: { fontFamily: "Times New Roman" }, tickLabels: { fontFamily: "Times New Roman" } }} />
+            <VictoryAxis dependentAxis style={{ tickLabels: { fontFamily: "Times New Roman"} }} />
+            <VictoryLine
+              x="time"
+              y="temperature"
+              domain={{y: [0, 100] }}
+              interpolation="linear" data={ props.data }
+              style={{ data: { stroke: "#fc0" } }}
+            />
+            <VictoryScatter data={ props.data }
+              x="time"
+              y="temperature"
+              size={2}
+              style={{ data: { fill: "#f00" } }}
+            />
+            <VictoryLine
+              x="time"
+              y="humidity"
+              interpolation="linear" data={ props.data }
+              style={{ data: { stroke: "#0ff" } }}
+            />
+            <VictoryScatter data={ props.data }
+              x="time"
+              y="humidity"
+              size={2}
+              style={{ data: { fill: "#0e5" } }}
+            />
+          </VictoryChart>)

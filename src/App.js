@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
-import './App.css';
+import { Route, NavLink } from 'react-router-dom';
+
 
 import { getLocations } from './adapter'
 
-import Locations from './components/Locations'
-import Graph from './components/Graph'
+import Location from './components/Location'
+import Nav from './components/Nav'
+import Home from './components/Home'
 
 
 export default class extends Component {
@@ -24,7 +25,7 @@ export default class extends Component {
     const slug = renderProps.match.params.locationSlug;
     const location = this.state.locations.find(location => location.slug === slug)
     if (location)
-      return <Graph location={ location } />
+      return <Location location={ location } />
     else
       return <React.Fragment />
   }
@@ -32,8 +33,11 @@ export default class extends Component {
   render(){
     return (
       <React.Fragment>
-        <h1>Temperature TCF</h1>
-        <Locations locations={ this.state.locations } />
+        <Nav locations={ this.state.locations } />
+        <h1 className="header-main">
+          <NavLink to="/">SwampCast 2000</NavLink>
+        </h1>
+        <Route exact path="/" component={ Home } /> 
         <Route path="/:locationSlug" render={ this.renderLocation } />
       </React.Fragment>
     );
