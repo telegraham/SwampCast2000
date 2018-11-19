@@ -1,13 +1,13 @@
 {
-  "main.css": "/tempgraphi/static/css/main.70ff50f3.chunk.css",
-  "main.js": "/tempgraphi/static/js/main.d45c14bd.chunk.js",
-  "main.js.map": "/tempgraphi/static/js/main.d45c14bd.chunk.js.map",
-  "static/js/1.eee59501.chunk.js": "/tempgraphi/static/js/1.eee59501.chunk.js",
-  "static/js/1.eee59501.chunk.js.map": "/tempgraphi/static/js/1.eee59501.chunk.js.map",
-  "runtime~main.js": "/tempgraphi/static/js/runtime~main.ecfcf415.js",
-  "runtime~main.js.map": "/tempgraphi/static/js/runtime~main.ecfcf415.js.map",
-  "static/css/main.70ff50f3.chunk.css.map": "/tempgraphi/static/css/main.70ff50f3.chunk.css.map",
-  "index.html": "/tempgraphi/index.html",
-  "precache-manifest.19a0d3d3fb77309e4ce650234e68f136.js": "/tempgraphi/precache-manifest.19a0d3d3fb77309e4ce650234e68f136.js",
-  "service-worker.js": "/tempgraphi/service-worker.js"
+  "main.css": "/SwampCast2000/static/css/main.70ff50f3.chunk.css",
+  "main.js": "/SwampCast2000/static/js/main.8680ab32.chunk.js",
+  "main.js.map": "/SwampCast2000/static/js/main.8680ab32.chunk.js.map",
+  "static/js/1.eee59501.chunk.js": "/SwampCast2000/static/js/1.eee59501.chunk.js",
+  "static/js/1.eee59501.chunk.js.map": "/SwampCast2000/static/js/1.eee59501.chunk.js.map",
+  "runtime~main.js": "/SwampCast2000/static/js/runtime~main.33cc99b2.js",
+  "runtime~main.js.map": "/SwampCast2000/static/js/runtime~main.33cc99b2.js.map",
+  "static/css/main.70ff50f3.chunk.css.map": "/SwampCast2000/static/css/main.70ff50f3.chunk.css.map",
+  "index.html": "/SwampCast2000/index.html",
+  "precache-manifest.d1a19c6a7bc73b41acfd63a6ffdf8cc9.js": "/SwampCast2000/precache-manifest.d1a19c6a7bc73b41acfd63a6ffdf8cc9.js",
+  "service-worker.js": "/SwampCast2000/service-worker.js"
 }
