@@ -4,19 +4,19 @@ self.__precacheManifest = [
     "url": "/SwampCast2000/static/js/runtime~main.33cc99b2.js"
   },
   {
-    "revision": "8680ab32d9ad31163a1e",
-    "url": "/SwampCast2000/static/js/main.8680ab32.chunk.js"
+    "revision": "8107d7139de78007fd90",
+    "url": "/SwampCast2000/static/js/main.8107d713.chunk.js"
   },
   {
     "revision": "eee59501cd48dd3dc317",
     "url": "/SwampCast2000/static/js/1.eee59501.chunk.js"
   },
   {
-    "revision": "8680ab32d9ad31163a1e",
+    "revision": "8107d7139de78007fd90",
     "url": "/SwampCast2000/static/css/main.70ff50f3.chunk.css"
   },
   {
-    "revision": "845b731c47edff97f1108e0b3055afe4",
+    "revision": "d880a0f189bd5fee1f5b097d85563459",
     "url": "/SwampCast2000/index.html"
   }
 ];
