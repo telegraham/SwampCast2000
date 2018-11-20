@@ -3,6 +3,9 @@ import { getReadings } from '../adapter'
 import { ActionCable } from 'react-actioncable-provider';
 import Graph from './Graph'
 
+
+const celsiusToFahrenheit = c => c * 9 / 5 + 32
+
 export default class extends Component {
 
   state = {
@@ -34,7 +37,7 @@ export default class extends Component {
   data(){
     return this.state.last_5_minutes.map(reading => ({
       humidity: reading.humidity,
-      temperature: reading.temperature,
+      temperature: celsiusToFahrenheit(reading.temperature),
       time: new Date(reading.time).getTime()
     }))
   }
@@ -42,7 +45,7 @@ export default class extends Component {
   handleReceivedReading = (reading) => {
     const historicalReading = reading.historical_reading;
     this.setState({
-      last_5_minutes: [ ...this.state.last_5_minutes, historicalReading ],
+      last_5_minutes: [ ...this.state.last_5_minutes.slice(1), historicalReading ],
       isUpdate: true
     })
   }
