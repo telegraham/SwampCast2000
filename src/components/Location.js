@@ -9,7 +9,12 @@ const celsiusToFahrenheit = c => c * 9 / 5 + 32
 export default class extends Component {
 
   state = {
-    last_5_minutes: []
+    last_5_minutes: [],
+    last_hour: [],
+    today: [],
+    last_week: [],
+    last_month: [],
+    last_year: [],
   }
 
   componentDidMount(){
@@ -34,8 +39,8 @@ export default class extends Component {
     })
   }
 
-  data(){
-    return this.state.last_5_minutes.map(reading => ({
+  data(whichKey){
+    return this.state[whichKey].map(reading => ({
       humidity: reading.humidity,
       temperature: celsiusToFahrenheit(reading.temperature),
       time: new Date(reading.time).getTime()
@@ -64,7 +69,10 @@ export default class extends Component {
       />
       <ol className="charts">
         <li>
-          <Graph data={ this.data() } isUpdate={ this.state.isUpdate }/>
+          <Graph data={ this.data("last_5_minutes") } isUpdate={ this.state.isUpdate } tickValues={ [5, 4, 3, 2, 1, 0] }/>
+        </li>
+        <li>
+          <Graph data={ this.data("last_hour") } tickValues={ [ 50,  30, 10] } />
         </li>
       </ol>
     </section>

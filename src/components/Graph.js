@@ -7,9 +7,9 @@ const xTick = (tick) => {
   return difference < 5 * 1000 ? "now" :timeAgo.ago(tick, false) + " ago" 
 }
 
-const tickValues = () => {
+const tickValues = (arr) => {
   const now = new Date().getTime()
-  return [5, 4, 3, 2, 1, 0].map((minutesAgo) => {
+  return arr.map((minutesAgo) => {
     return now - minutesAgo * 60 * 1000;
   })
 }
@@ -19,7 +19,7 @@ export default props => (<VictoryChart height={390} >
               label="Time"
               scale="time"
               tickFormat={ xTick }
-              tickValues={ tickValues() }
+              tickValues={ tickValues(props.tickValues) }
               style={{ axisLabel: { fontFamily: "Times New Roman" }, tickLabels: { fontFamily: "Times New Roman" } }} />
             <VictoryAxis dependentAxis style={{ tickLabels: { fontFamily: "Times New Roman"} }} />
             <VictoryLine
