@@ -63,7 +63,7 @@ export default class extends Component {
         { this.props.location.name }
       </h2>
       <ActionCable
-        key={ location.id }  
+        key={ location.slug }  
         channel={{ channel: 'ReadingsChannel', location: location.slug }}
         onReceived={this.handleReceivedReading}
       />
