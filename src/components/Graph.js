@@ -14,7 +14,7 @@ const tickValues = (arr) => {
   })
 }
 
-export default props => (<VictoryChart height={390} >
+export default props => (<VictoryChart height={390} domainPadding={ { y: 20 } } >
             <VictoryAxis 
               label="Time"
               scale="time"
@@ -25,7 +25,6 @@ export default props => (<VictoryChart height={390} >
             <VictoryLine
               x="time"
               y="temperature"
-              domain={{y: [0, 100] }}
               interpolation="linear" data={ props.data }
               style={{ data: { stroke: "#fc0" } }}
             />

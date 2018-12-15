@@ -39,11 +39,11 @@ export default class extends Component {
     })
   }
 
-  data(whichKey){
+  data(whichKey, sourceReadingKeyPrefix = "", sourceTimeKeyPrefix = ""){
     return this.state[whichKey].map(reading => ({
-      humidity: reading.humidity,
-      temperature: celsiusToFahrenheit(reading.temperature),
-      time: new Date(reading.time).getTime()
+      humidity: reading[sourceReadingKeyPrefix + "humidity"],
+      temperature: celsiusToFahrenheit(reading[sourceReadingKeyPrefix + "temperature"]),
+      time: new Date(reading[sourceTimeKeyPrefix + "time"]).getTime()
     }))
   }
 
@@ -73,6 +73,12 @@ export default class extends Component {
         </li>
         <li>
           <Graph data={ this.data("last_hour") } tickValues={ [ 50,  30, 10] } />
+        </li>
+        <li>
+          <Graph data={ this.data("today", "mean_", "start_") } tickValues={ [21 * 60, 15 * 60, 9 * 60, 3 * 60] } />
+        </li>
+        <li>
+          <Graph data={ this.data("last_week", "mean_", "start_") } tickValues={ [6,5,4,3,2,1].map(num => (num *[ 24 * 60])) } />
         </li>
       </ol>
     </section>
