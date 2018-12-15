@@ -14,12 +14,13 @@ const tickValues = (arr) => {
   })
 }
 
-export default props => (<VictoryChart height={390} domainPadding={ { y: 20 } } >
+export default props => (<VictoryChart height={390} domain={ { x: props.range } } domainPadding={ { y: 20 } } >
             <VictoryAxis 
               label="Time"
               scale="time"
-              tickFormat={ xTick }
-              tickValues={ tickValues(props.tickValues) }
+              tickCount={ props.tickCount }
+              tickFormat={ props.xTickFn || xTick }
+              tickValues={ props.tickValues ? tickValues(props.tickValues) : props.tickValues }
               style={{ axisLabel: { fontFamily: "Times New Roman" }, tickLabels: { fontFamily: "Times New Roman" } }} />
             <VictoryAxis dependentAxis style={{ tickLabels: { fontFamily: "Times New Roman"} }} />
             <VictoryLine

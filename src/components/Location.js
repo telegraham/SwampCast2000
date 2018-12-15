@@ -3,6 +3,7 @@ import { getReadings } from '../adapter'
 import { ActionCable } from 'react-actioncable-provider';
 import Graph from './Graph'
 
+const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
 const celsiusToFahrenheit = c => c * 9 / 5 + 32
 
@@ -55,6 +56,17 @@ export default class extends Component {
     })
   }
 
+  timeOfDay(value){
+    const d = new Date(value);
+    const hours = d.getHours()
+    const minutes = d.getMinutes()
+    return `${ hours }:${ minutes > 9 ? minutes : "0" + minutes  }`;
+  }
+
+  dayOfWeek(value){
+    return DAYS[new Date(value).getDay()];
+  }
+
   render(){
     const { location } = this.props
     return <section>
@@ -74,11 +86,11 @@ export default class extends Component {
         <li>
           <Graph data={ this.data("last_hour") } tickValues={ [ 50,  30, 10] } />
         </li>
-        <li>
-          <Graph data={ this.data("today", "mean_", "start_") } tickValues={ [21 * 60, 15 * 60, 9 * 60, 3 * 60] } />
+        <li> 
+          <Graph data={ this.data("today", "mean_", "start_") } xTickFn={ this.timeOfDay } />
         </li>
         <li>
-          <Graph data={ this.data("last_week", "mean_", "start_") } tickValues={ [6,5,4,3,2,1].map(num => (num *[ 24 * 60])) } />
+          <Graph data={ this.data("last_week", "mean_", "start_") } xTickFn={ this.dayOfWeek } range={ [ (new Date().getTime() - (7 * 24 * 60 * 60 * 1000)), new Date().getTime() ] } tickCount={ 4 } />
         </li>
       </ol>
     </section>
