@@ -1,5 +1,5 @@
 import React from 'react'
-import { VictoryChart, VictoryLine, VictoryScatter, VictoryAxis } from 'victory'
+import { VictoryChart, VictoryLine, VictoryScatter, VictoryAxis, VictoryVoronoiContainer } from 'victory'
 import timeAgo from 'time-ago'
 
 const xTick = (tick) => { 
@@ -14,7 +14,41 @@ const tickValues = (arr) => {
   })
 }
 
-export default props => (<VictoryChart height={390} domain={ { x: props.range } } domainPadding={ { y: 20 } } >
+// const scatterEvents = (props) => ([{
+//   target: "data",
+//   eventHandlers: {
+//     onActivated: (event, datum) => ({ 
+//       mutation: () => {
+//         props.mouseOver(datum.datum)
+//         return { }
+//       }
+//     }),
+//     onDeactivated: (event, datum) => ({ 
+//       mutation: () => {
+//         props.mouseOut(datum.datum)
+//         return { }
+//       }
+//     })
+//   }
+// }])
+
+const putDataInHoverCallback = (callback) => {
+  return (one) => {
+    callback(one)
+  }
+} 
+
+
+const sizeFn = (datum, active) => active ? 4 : 2
+
+export default props => (<VictoryChart 
+                          containerComponent={ <VictoryVoronoiContainer 
+                                                  voronoiDimension="x"
+                                                  onActivated={ putDataInHoverCallback(props.mouseOver) } 
+                                                  onDeactivated={ putDataInHoverCallback(props.mouseOut) }/> } 
+                          height={390} 
+                          domain={ { x: props.range } } 
+                          domainPadding={ { y: 20 } } >
             <VictoryAxis 
               label="Time"
               scale="time"
@@ -32,7 +66,7 @@ export default props => (<VictoryChart height={390} domain={ { x: props.range } 
             <VictoryScatter data={ props.data }
               x="time"
               y="temperature"
-              size={2}
+              size={ sizeFn }
               style={{ data: { fill: "#f00" } }}
             />
             <VictoryLine
@@ -44,7 +78,7 @@ export default props => (<VictoryChart height={390} domain={ { x: props.range } 
             <VictoryScatter data={ props.data }
               x="time"
               y="humidity"
-              size={2}
+              size={ sizeFn }
               style={{ data: { fill: "#0e5" } }}
             />
           </VictoryChart>)
