@@ -14,8 +14,8 @@ export default class extends Component {
     last_hour: [],
     today: [],
     last_week: [],
-    last_month: [],
-    last_year: [],
+    // last_month: [],
+    // last_year: [],
   }
 
   componentDidMount(){
@@ -33,25 +33,35 @@ export default class extends Component {
     getReadings(slug, (data) => {
       // console.log(data)
       this.setState({
-        ...data,
+        last_5_minutes: this.data(data.last_5_minutes),
+        last_hour: this.data(data.last_hour),
+        today: this.data(data.today, "mean_", "start_"),
+        last_week: this.data(data.last_week, "mean_", "start_"),
         locationSlug: slug,
         isUpdate: false
       })
     })
   }
 
-  data(whichKey, sourceReadingKeyPrefix = "", sourceTimeKeyPrefix = ""){
-    return this.state[whichKey].map(reading => ({
-      humidity: reading[sourceReadingKeyPrefix + "humidity"],
-      temperature: celsiusToFahrenheit(reading[sourceReadingKeyPrefix + "temperature"]),
-      time: new Date(reading[sourceTimeKeyPrefix + "time"]).getTime()
-    }))
+  data(dataArray, sourceReadingKeyPrefix = "", sourceTimeKeyPrefix = ""){
+    return dataArray.map((datum) => this.formatDatum(datum, sourceReadingKeyPrefix, sourceTimeKeyPrefix))
   }
 
+  formatDatum = (reading, sourceReadingKeyPrefix = "", sourceTimeKeyPrefix = "") => ({
+    humidity: reading[sourceReadingKeyPrefix + "humidity"],
+    temperature: celsiusToFahrenheit(reading[sourceReadingKeyPrefix + "temperature"]),
+    time: new Date(reading[sourceTimeKeyPrefix + "time"]).getTime()
+  })
+
   handleReceivedReading = (reading) => {
-    const historicalReading = reading.historical_reading;
+    const ago5 = new Date() - 5 * 60 * 1000
+    const ago60 = new Date() - 60 * 60 * 1000
+    const updatedLast5 = this.state.last_5_minutes.filter(reading => reading.time > ago5)
+    const updatedLastHour = this.state.last_hour.filter(reading => reading.time > ago60)
+    const historicalReading = this.formatDatum(reading.historical_reading);
     this.setState({
-      last_5_minutes: [ ...this.state.last_5_minutes.slice(1), historicalReading ],
+      last_5_minutes: [ ...updatedLast5, historicalReading ],
+      last_hour: [ ...updatedLastHour, historicalReading ],
       isUpdate: true
     })
   }
@@ -81,16 +91,16 @@ export default class extends Component {
       />
       <ol className="charts">
         <li>
-          <Graph data={ this.data("last_5_minutes") } isUpdate={ this.state.isUpdate } tickValues={ [5, 4, 3, 2, 1, 0] }/>
+          <Graph data={ this.state.last_5_minutes } isUpdate={ this.state.isUpdate } tickValues={ [5, 4, 3, 2, 1, 0] }/>
         </li>
         <li>
-          <Graph data={ this.data("last_hour") } tickValues={ [ 50,  30, 10] } />
+          <Graph data={ this.state.last_hour } tickValues={ [ 50,  30, 10] } />
         </li>
         <li> 
-          <Graph data={ this.data("today", "mean_", "start_") } xTickFn={ this.timeOfDay } />
+          <Graph data={ this.state.today } xTickFn={ this.timeOfDay } />
         </li>
         <li>
-          <Graph data={ this.data("last_week", "mean_", "start_") } xTickFn={ this.dayOfWeek } range={ [ (new Date().getTime() - (7 * 24 * 60 * 60 * 1000)), new Date().getTime() ] } tickCount={ 4 } />
+          <Graph data={ this.state.last_week } xTickFn={ this.dayOfWeek } range={ [ (new Date().getTime() - (7 * 24 * 60 * 60 * 1000)), new Date().getTime() ] } tickCount={ 4 } />
         </li>
       </ol>
     </section>
