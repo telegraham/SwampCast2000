@@ -6,12 +6,7 @@ import BigNumber from './BigNumber'
 
 import timeAgo from 'time-ago'
 
-
-const celsiusToFahrenheit = c => c * 9 / 5 + 32
-
-export default class extends Component {
-
-  state = {
+const DEFAULT_STATE = {
     latest: {},
     last_5_minutes: [],
     last_hour: [],
@@ -20,6 +15,11 @@ export default class extends Component {
     // last_month: [],
     // last_year: [],
   }
+const celsiusToFahrenheit = c => c * 9 / 5 + 32
+
+export default class extends Component {
+
+  state = { ...DEFAULT_STATE }
 
   componentDidMount(){
     this.setReadings()
@@ -33,8 +33,9 @@ export default class extends Component {
   setReadings(){
     const { slug } = this.props.location;
     // console.log(this.state)
+    this.setState({ ...DEFAULT_STATE, locationSlug: slug})
     getReadings(slug, (data) => {
-      // console.log(data)
+      // console.log(this.formatDatum(data.latest))
       this.setState({
         latest: this.formatDatum(data.latest),
         last_5_minutes: this.data(data.last_5_minutes),
@@ -98,7 +99,6 @@ export default class extends Component {
   render(){
     const { location } = this.props;
     return <section>
-      <hr className="graph-divider-top" />
       <h2>
         { this.props.location.name }
       </h2>
@@ -108,7 +108,7 @@ export default class extends Component {
         channel={{ channel: 'ReadingsChannel', location: location.slug }}
         onReceived={this.handleReceivedReading}
       />
-      <Graphs 
+      { this.state.last_5_minutes.length ? <Graphs 
         mouseOver={ this.mouseOver } 
         mouseOut={ this.mouseOut } 
         last_5_minutes={ this.state.last_5_minutes }
@@ -117,7 +117,7 @@ export default class extends Component {
         last_week={ this.state.last_week }
         isUpdate={ this.state.isUpdate }
         xTick={ this.xTick }
-        />
+        /> : ""}
     </section>
   }
 }

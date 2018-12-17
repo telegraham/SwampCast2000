@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Graph from './Graph'
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]

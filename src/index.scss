@@ -84,26 +84,34 @@ body {
   margin: 4px 0 20px 0;
   border: 4px groove;
   box-sizing: border-box;
+  overflow: hidden;
 }
 .big-number-wrapper.fixed {
   border-width: 0;
 }
 .big-number-wrapper.loading {
-  opacity: 0;
-  background: #aaa;
-  animation: throb .5s infinite alternate;
+  border: 4px inset;
+  background: repeating-linear-gradient(
+    -45deg,
+    #00f,
+    #00f 45px,
+    #ccc 40px,
+    #ccc 80px
+  );
+  background-size: 200% 200%;
+  animation: to-the-right .5s linear infinite; 
 }
-@keyframes throb {
+@keyframes to-the-right {
   0% {
-    opacity: 1;
+    background-position-x: 0px;
   }
-  1000% {
-    opacity: 0;
+  100% {
+    background-position-x: -114px;
   }
 }
+
 .big-number {
-  transition: box-shadow 0s;
-    /* hack */
+  /* hack */
   margin: 0 -15px;
   padding: 10px 15px 10px;
 
@@ -112,16 +120,30 @@ body {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  background: #ccc;
 }
-
+.fixed .big-number {
+  transition: box-shadow .5s;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  border-bottom: 4px ridge;
+  background: #bbb;
+}
+.big-number-wrapper.just-updated, 
+.just-updated .big-number {
+  border-color: yellow;
+  background: pink;
+}
 .big-number dt {
-  //visuallyHidden
   order: 2;
-  color: #aaa;
+  color: #fff;
+  font-style: italic;
 }
 .big-number dd {
   order: 1;
   font-size: 42px;
+  white-space: nowrap;
 }
 .big-number dd.temperature {
   color: #c50;
@@ -137,15 +159,7 @@ body {
   width: 33%;
   text-align: center;
 }
-.fixed .big-number {
-  transition: box-shadow .5s;
-  position: fixed;
-  top: 0;
-  background: #ffffffee;
-  z-index: 10;
-  box-shadow: 0 10px 100px #00000022;
-}
-
 .hover .big-number .time {
   color: #90f;
 }
+

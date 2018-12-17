@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 export default class extends React.PureComponent {
 
@@ -8,7 +8,8 @@ export default class extends React.PureComponent {
   }
 
   state = {
-    scrollY: window.pageYOffset
+    scrollY: window.pageYOffset,
+    justUpdated: false
   }
 
   handleScroll = () => {
@@ -17,12 +18,26 @@ export default class extends React.PureComponent {
     })
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const justUpdated = prevState.lastLatestTime && nextProps.latest.time && prevState.lastLatestTime !== nextProps.latest.time
+    // console.log(prevState.lastLatestTime, nextProps.latest.time, justUpdated)
+    return {
+      justUpdated: justUpdated,
+      lastLatestTime: nextProps.latest.time
+    };
+  }
+
   componentDidMount =  function() {
     window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillUnmount =  function() {
     window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  componentDidUpdate() {
+    if (this.state.justUpdated)
+      setTimeout(() => this.setState({ justUpdated: false }), 1000)
   }
 
   className(datum){
@@ -35,6 +50,8 @@ export default class extends React.PureComponent {
       classes.push("hover")
     if (!datum.time)
       classes.push("loading")
+    if (this.state.justUpdated)
+      classes.push("just-updated")
     return classes.join(" ")
   }
 

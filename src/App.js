@@ -37,6 +37,7 @@ export default class extends Component {
         <h1 className="header-main">
           <NavLink to="/">SwampCast 2000</NavLink>
         </h1>
+        <hr className="graph-divider-top" />
         <Route exact path="/" component={ Home } /> 
         <Route path="/:locationSlug" render={ this.renderLocation } />
       </React.Fragment>
