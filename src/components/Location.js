@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { getReadings } from '../adapter'
 import { ActionCable } from 'react-actioncable-provider';
-import Graph from './Graph'
+import Graphs from './Graphs'
+import BigNumber from './BigNumber'
 
-const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+import timeAgo from 'time-ago'
+
 
 const celsiusToFahrenheit = c => c * 9 / 5 + 32
 
@@ -62,63 +64,60 @@ export default class extends Component {
     // const updatedLastHour = this.state.last_hour.filter(reading => reading.time > ago60)
     const historicalReading = this.formatDatum(reading.historical_reading);
     this.setState({
+      latest: historicalReading,
       last_5_minutes: [ ...updatedLast5, historicalReading ],
       // last_hour: [ ...updatedLastHour, historicalReading ],
       isUpdate: true
     })
   }
 
-  timeOfDay(value){
-    const d = new Date(value);
-    const hours = d.getHours()
-    const minutes = d.getMinutes()
-    return `${ hours }:${ minutes > 9 ? minutes : "0" + minutes  }`;
-  }
-
-  dayOfWeek(value){
-    return DAYS[new Date(value).getDay()];
+  xTick = (tick) => { 
+    const difference = new Date() - tick;
+    return difference < 5 * 1000 ? "now" : timeAgo.ago(tick, false) + " ago" 
   }
 
   mouseOver = (data) => {
+    // // console.log("over", data[0] ? data[0].time : null)
     const temp = data.find(datum => datum.temperature && !datum.continuous)
     const hum = data.find(datum => datum.humidity && !datum.continuous)
     if (temp && hum)
       this.setState({ hover: { temperature: temp.temperature, humidity: hum.humidity, time: temp.time } })
+      // this.setState({ hover: { temperature: 9, humidity: 3, time: 200 } })
   }
   mouseOut = (data) => {
-    if (this.state.hover && this.state.hover.time === data[0].time)
-      this.setState({ hover: null })
+    // console.log("out", data[0] ? data[0].time : null, this.state.hover && this.state.hover.time === data[0].time ? "matches state" : "nope")
+    // if (this.state.hover && this.state.hover.time === data[0].time)
+    this.setState((prevState) => {
+      if (!data[0] || (prevState.hover && prevState.hover.time === data[0].time))
+        return { hover: null }
+      else
+        return { }
+    })
   }
 
   render(){
-    const { location } = this.props
+    const { location } = this.props;
     return <section>
       <hr className="graph-divider-top" />
       <h2>
         { this.props.location.name }
       </h2>
-      <h3>
-        Temp: { this.state.hover ? this.state.hover.temperature : this.state.latest.temperature }
-      </h3>
+      <BigNumber hover={ this.state.hover } latest={ this.state.latest } xTick={ this.xTick } />
       <ActionCable
         key={ location.slug }  
         channel={{ channel: 'ReadingsChannel', location: location.slug }}
         onReceived={this.handleReceivedReading}
       />
-      <ol className="charts">
-        <li>
-          <Graph mouseOver={ this.mouseOver } mouseOut={ this.mouseOut } data={ this.state.last_5_minutes } isUpdate={ this.state.isUpdate } tickValues={ [5, 4, 3, 2, 1, 0] }/>
-        </li>
-        <li>
-          <Graph mouseOver={ this.mouseOver } mouseOut={ this.mouseOut } data={ this.state.last_hour } tickValues={ [ 50,  30, 10] } />
-        </li>
-        <li> 
-          <Graph mouseOver={ this.mouseOver } mouseOut={ this.mouseOut } data={ this.state.today } xTickFn={ this.timeOfDay } />
-        </li>
-        <li>
-          <Graph mouseOver={ this.mouseOver } mouseOut={ this.mouseOut } data={ this.state.last_week } xTickFn={ this.dayOfWeek } range={ [ (new Date().getTime() - (7 * 24 * 60 * 60 * 1000)), new Date().getTime() ] } tickCount={ 4 } />
-        </li>
-      </ol>
+      <Graphs 
+        mouseOver={ this.mouseOver } 
+        mouseOut={ this.mouseOut } 
+        last_5_minutes={ this.state.last_5_minutes }
+        last_hour={ this.state.last_hour }
+        today={ this.state.today }
+        last_week={ this.state.last_week }
+        isUpdate={ this.state.isUpdate }
+        xTick={ this.xTick }
+        />
     </section>
   }
 }

@@ -3,13 +3,15 @@ body {
   padding: 0;
   background: navy;
 }
-
-#root {
+#root, .big-number {
   max-width: 900px;
+}
+#root {
   margin: auto;
   background: white;
   overflow: hidden;
   padding: 0 1em 1.33em;
+  position: relative;
 }
 .header-main a {
   color: black;
@@ -63,10 +65,87 @@ body {
   margin: 0 -1em -1em 0;
 }
 .charts li {
-  border: 2px groove;
+  border: 4px ridge;
   border-radius: 2px;
   flex-grow: 1;
   flex-shrink: 1;
   width: 47%;
   margin: 0 1em 1em 0;
+}
+.big-number, 
+.big-number-wrapper {
+  width: 100%;
+  height: 100px;
+  padding: 0;
+  margin: 0;
+}
+.big-number-wrapper {
+  transition: opacity .5s;
+  margin: 4px 0 20px 0;
+  border: 4px groove;
+  box-sizing: border-box;
+}
+.big-number-wrapper.fixed {
+  border-width: 0;
+}
+.big-number-wrapper.loading {
+  opacity: 0;
+  background: #aaa;
+  animation: throb .5s infinite alternate;
+}
+@keyframes throb {
+  0% {
+    opacity: 1;
+  }
+  1000% {
+    opacity: 0;
+  }
+}
+.big-number {
+  transition: box-shadow 0s;
+    /* hack */
+  margin: 0 -15px;
+  padding: 10px 15px 10px;
+
+  overflow: hidden;
+  height: 80px; //100 minus 30 padding, can't box-sizing or it breaks the horizontal
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.big-number dt {
+  //visuallyHidden
+  order: 2;
+  color: #aaa;
+}
+.big-number dd {
+  order: 1;
+  font-size: 42px;
+}
+.big-number dd.temperature {
+  color: #c50;
+}
+.big-number dd.humidity {
+  color: #0a7;
+}
+.big-number dt,
+.big-number dd {
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  width: 33%;
+  text-align: center;
+}
+.fixed .big-number {
+  transition: box-shadow .5s;
+  position: fixed;
+  top: 0;
+  background: #ffffffee;
+  z-index: 10;
+  box-shadow: 0 10px 100px #00000022;
+}
+
+.hover .big-number .time {
+  color: #90f;
 }
