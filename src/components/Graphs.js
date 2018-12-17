@@ -1,7 +1,7 @@
 import React from 'react';
 import Graph from './Graph'
 
-const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
 export default class extends React.PureComponent {
 
@@ -19,16 +19,16 @@ export default class extends React.PureComponent {
   render(){ 
     return (<ol className="charts">
       <li>
-        <Graph xTick={ this.props.xTick } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_5_minutes } isUpdate={ this.props.isUpdate } tickValues={ [5, 4, 3, 2, 1, 0] }/>
+        <Graph title="Last 5 minutes" xTick={ this.props.xTick } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_5_minutes } isUpdate={ this.props.isUpdate } tickValues={ [5, 4, 3, 2, 1, 0] }/>
       </li>
       <li>
-        <Graph xTick={ this.props.xTick } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_hour } tickValues={ [ 50,  30, 10] } />
+        <Graph title="This hour" xTick={ this.props.xTick } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_hour } tickValues={ [ 50,  30, 10] } />
       </li>
       <li> 
-        <Graph xTick={ this.props.xTick } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.today } xTickFn={ this.timeOfDay } />
+        <Graph title="Last 24 hours" xTick={ this.props.xTick } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.today } xTickFn={ this.timeOfDay } />
       </li>
       <li>
-        <Graph xTick={ this.props.xTick } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_week } xTickFn={ this.dayOfWeek } range={ [ (new Date().getTime() - (7 * 24 * 60 * 60 * 1000)), new Date().getTime() ] } tickCount={ 4 } />
+        <Graph title="This week" xTick={ this.props.xTick } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_week } xTickFn={ this.dayOfWeek } range={ [ (new Date().getTime() - (7 * 24 * 60 * 60 * 1000)), new Date().getTime() ] } tickCount={ 6 } />
       </li>
     </ol>)
     } 

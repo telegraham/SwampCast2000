@@ -1,5 +1,5 @@
 import React from 'react'
-import { VictoryChart, VictoryLine, VictoryScatter, VictoryAxis, VictoryVoronoiContainer } from 'victory'
+import { VictoryChart, VictoryLabel, VictoryLine, VictoryScatter, VictoryAxis, VictoryVoronoiContainer } from 'victory'
 
 const axisStyle = { 
   axisLabel: { 
@@ -45,16 +45,21 @@ export default class extends React.PureComponent {
   sizeFn = (datum, active) => active ? 4 : 2
 
   render(){
-    return (<VictoryChart 
-                          containerComponent={ <VictoryVoronoiContainer 
+    return (<VictoryChart containerComponent={ <VictoryVoronoiContainer 
                                                   voronoiDimension="x"
                                                   onActivated={ this.putDataInHoverCallback("mouseOver") } 
                                                   onDeactivated={ this.putDataInHoverCallback("mouseOut") }/> } 
                           height={390} 
                           domain={ { x: this.props.range } } 
                           domainPadding={ { y: 20 } } >
+            <VictoryLabel 
+              text={ this.props.title } 
+              x={225} y={30} 
+              textAnchor="middle" 
+              style={ { 
+                  fontFamily: "Times New Roman" 
+                } }/>
             <VictoryAxis 
-              label="Time"
               scale="time"
               tickCount={ this.props.tickCount }
               tickFormat={ this.props.xTickFn || this.props.xTick }

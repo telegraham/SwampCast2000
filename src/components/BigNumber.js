@@ -36,8 +36,12 @@ export default class extends React.PureComponent {
   }
 
   componentDidUpdate() {
-    if (this.state.justUpdated)
-      setTimeout(() => this.setState({ justUpdated: false }), 1000)
+    if (this.state.justUpdated && !this.justUpdatedTimeout)
+      this.justUpdatedTimeout = setTimeout(() => {
+        this.setState({ justUpdated: false }, () => {
+          this.justUpdatedTimeout = null;
+        })
+      }, 1000)
   }
 
   className(datum){
