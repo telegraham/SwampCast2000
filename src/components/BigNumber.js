@@ -69,7 +69,7 @@ export default class extends React.PureComponent {
         <dt>Humidity</dt>
         <dd className="humidity">{ Math.round(datum.humidity) }%</dd>
         <dt>Time</dt>
-        <dd className="time">{ this.props.xTick(datum.time) }</dd>
+        <dd className="time">{ datum.timeString || "now" }</dd>
       </dl>) : ""
     }    
     </div>)

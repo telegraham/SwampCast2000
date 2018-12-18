@@ -77,12 +77,12 @@ export default class extends Component {
     return difference < 5 * 1000 ? "now" : timeAgo.ago(tick, false) + " ago" 
   }
 
-  mouseOver = (data) => {
+  mouseOver = (data, stringifyFn) => {
     // // console.log("over", data[0] ? data[0].time : null)
     const temp = data.find(datum => datum.temperature && !datum.continuous)
     const hum = data.find(datum => datum.humidity && !datum.continuous)
     if (temp && hum)
-      this.setState({ hover: { temperature: temp.temperature, humidity: hum.humidity, time: temp.time } })
+      this.setState({ hover: { temperature: temp.temperature, humidity: hum.humidity, time: temp.time, timeString: stringifyFn(temp.time) } })
       // this.setState({ hover: { temperature: 9, humidity: 3, time: 200 } })
   }
   mouseOut = (data) => {
@@ -116,7 +116,7 @@ export default class extends Component {
         today={ this.state.today }
         last_week={ this.state.last_week }
         isUpdate={ this.state.isUpdate }
-        xTick={ this.xTick }
+        defaultXTickFn={ this.xTick }
         /> : ""}
     </section>
   }

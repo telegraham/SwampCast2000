@@ -38,7 +38,7 @@ export default class extends React.PureComponent {
 
   putDataInHoverCallback = (callbackKey) => {
     return (data) => {
-      this.props[callbackKey](data)
+      this.props[callbackKey](data, this.props.xTickFnLong || this.props.xTickFn)
     }
   } 
 
@@ -62,7 +62,7 @@ export default class extends React.PureComponent {
             <VictoryAxis 
               scale="time"
               tickCount={ this.props.tickCount }
-              tickFormat={ this.props.xTickFn || this.props.xTick }
+              tickFormat={ this.props.xTickFn }
               tickValues={ this.props.tickValues ? this.tickValues(this.props.tickValues) : this.props.tickValues }
               style={ axisStyle } />
             <VictoryAxis 
