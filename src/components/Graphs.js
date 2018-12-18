@@ -15,7 +15,6 @@ export default class extends React.PureComponent {
 
   timeOfDayLong = (value) => {
     const isToday = (new Date()).getDay() === (new Date(value)).getDay();
-    console.log(isToday)
     return this.timeOfDay(value) + (isToday ? " Today" : " Yesterday");
   }
 

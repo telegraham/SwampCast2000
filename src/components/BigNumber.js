@@ -21,10 +21,37 @@ export default class extends React.PureComponent {
   static getDerivedStateFromProps(nextProps, prevState) {
     const justUpdated = prevState.lastLatestTime && nextProps.latest.time && prevState.lastLatestTime !== nextProps.latest.time
     // console.log(prevState.lastLatestTime, nextProps.latest.time, justUpdated)
+
+    let previous = null
+    if (!nextProps.latest.time) // switched location
+      previous = null
+    else if (justUpdated)
+      previous = prevState.latest
+    else 
+      previous = prevState.previous 
+
+    // console.log(nextProps.latest.time, previous)
+
     return {
       justUpdated: justUpdated,
+      previous,
+      latest: nextProps.latest,
       lastLatestTime: nextProps.latest.time
     };
+  }
+
+  diff = (key) => {
+    // console.log(this.state)
+    if (!this.state.previous)
+      return ""
+    const latest = Math.round(this.state.latest[key])
+    const previous = Math.round(this.state.previous[key])
+    if (latest === previous)
+      return "↔️"
+    else if (latest > previous)
+      return "📈"
+    else if (latest < previous)
+      return "📉"
   }
 
   componentDidMount =  function() {
@@ -64,10 +91,10 @@ export default class extends React.PureComponent {
     return (<div ref={ this.wrapperRef } className={ this.className(datum) }>
     {
       datum.time ? (<dl className="big-number">
-        <dt>Temperature</dt>
-        <dd className="temperature">{ Math.round(datum.temperature) }°</dd>
+        <dt>Temperature </dt>
+        <dd className="temperature">{ Math.round(datum.temperature) }° { this.props.hover ? "" : this.diff("temperature") }</dd>
         <dt>Humidity</dt>
-        <dd className="humidity">{ Math.round(datum.humidity) }%</dd>
+        <dd className="humidity">{ Math.round(datum.humidity) }% { this.props.hover ? "" : this.diff("humidity") }</dd>
         <dt>Time</dt>
         <dd className="time">{ datum.timeString || "now" }</dd>
       </dl>) : ""
