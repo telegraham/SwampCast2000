@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/SwampCast2000/precache-manifest.c60695cff7aea5064260c5513e231278.js"
+  "/SwampCast2000/precache-manifest.21ce8c08fd00a23487edb5de502186f0.js"
 );
 
 workbox.clientsClaim();
