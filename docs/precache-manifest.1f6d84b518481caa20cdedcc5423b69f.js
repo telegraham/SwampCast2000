@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/SwampCast2000/static/css/main.5427fb2e.chunk.css"
   },
   {
-    "revision": "2f6770fe54f4f73d5aa7d6fca127b51c",
+    "revision": "6decab99718a8d29ca9ec49e4f1c49f7",
     "url": "/SwampCast2000/index.html"
   }
 ];
