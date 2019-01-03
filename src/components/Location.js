@@ -12,8 +12,8 @@ const DEFAULT_STATE = {
     last_hour: [],
     today: [],
     last_week: [],
-    // last_month: [],
-    // last_year: [],
+    last_month: [],
+    last_year: [],
   }
 const celsiusToFahrenheit = c => c * 9 / 5 + 32
 
@@ -42,6 +42,8 @@ export default class extends Component {
         last_hour: this.data(data.last_hour, "mean_", "start_"),
         today: this.data(data.today, "mean_", "start_"),
         last_week: this.data(data.last_week, "mean_", "start_"),
+        last_month: this.data(data.last_month, "mean_", "start_"),
+        last_year: this.data(data.last_year, "mean_", "start_"),
         locationSlug: slug,
         isUpdate: false
       })
@@ -115,6 +117,8 @@ export default class extends Component {
         last_hour={ this.state.last_hour }
         today={ this.state.today }
         last_week={ this.state.last_week }
+        last_month={ this.state.last_month }
+        last_year={ this.state.last_year }
         isUpdate={ this.state.isUpdate }
         defaultXTickFn={ this.xTick }
         /> : ""}

@@ -3,6 +3,9 @@ import Graph from './Graph'
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 const DAYS_SHORT = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+// const graphs = 
 
 export default class extends React.PureComponent {
 
@@ -26,6 +29,27 @@ export default class extends React.PureComponent {
     return DAYS_SHORT[new Date(value).getDay()] + " " + this.timeOfDay(value);
   }
 
+  date = (value) => {
+    const dateObject = new Date(value);
+    const date = dateObject.getDate();
+    const month = MONTHS[dateObject.getMonth()];
+    return `${ month } ${ date }`;
+  }
+  monthYear = (value) => {
+    const dateObject = new Date(value);
+    const year = dateObject.getFullYear();
+    const month = MONTHS[dateObject.getMonth()];
+    return `${ month } ${ year }`;
+  }
+
+  fullDate = (value) => {
+    const dateObject = new Date(value);
+    const year = dateObject.getFullYear();
+    const month = MONTHS[dateObject.getMonth()];
+    const day = dateObject.getDate();
+    return [month, day, year].join(" ")
+  }
+
   render(){ 
     return (<ol className="charts">
       <li>
@@ -38,7 +62,13 @@ export default class extends React.PureComponent {
         <Graph title="Last 24 hours" xTickFn={ this.timeOfDay } xTickFnLong={ this.timeOfDayLong } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.today }  />
       </li>
       <li>
-        <Graph title="This week" xTickFn={ this.dayOfWeek } xTickFnLong={ this.dayOfWeekLong } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_week }  range={ [ (new Date().getTime() - (7 * 24 * 60 * 60 * 1000)), new Date().getTime() ] } tickCount={ 6 } />
+        <Graph title="Last week" xTickFn={ this.dayOfWeek } xTickFnLong={ this.dayOfWeekLong } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_week }  range={ [ (new Date().getTime() - (7 * 24 * 60 * 60 * 1000)), new Date().getTime() ] } tickCount={ 6 } />
+      </li>
+      <li>
+        <Graph title="Last month" xTickFn={ this.date } xTickFnLong={ this.date } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_month }  />
+      </li>
+      <li>
+        <Graph title="Last year" xTickFn={ this.monthYear } xTickFnLong={ this.fullDate } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_year } range={ [ (new Date().getTime() - (365 * 24 * 60 * 60 * 1000)), new Date().getTime() ] } tickCount={ 6 }   />
       </li>
     </ol>)
     } 
