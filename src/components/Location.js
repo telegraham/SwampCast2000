@@ -7,6 +7,7 @@ import BigNumber from './BigNumber'
 import timeAgo from 'time-ago'
 
 const DEFAULT_STATE = {
+    fetching: true,
     latest: {},
     last_5_minutes: [],
     last_hour: [],
@@ -45,7 +46,8 @@ export default class extends Component {
         last_month: this.data(data.last_month, "mean_", "start_"),
         last_year: this.data(data.last_year, "mean_", "start_"),
         locationSlug: slug,
-        isUpdate: false
+        isUpdate: false,
+        fetching: false,
       })
     })
   }
@@ -110,7 +112,7 @@ export default class extends Component {
         channel={{ channel: 'ReadingsChannel', location: location.slug }}
         onReceived={this.handleReceivedReading}
       />
-      { this.state.last_5_minutes.length ? <Graphs 
+      { this.state.fetching ? "" : <Graphs 
         mouseOver={ this.mouseOver } 
         mouseOut={ this.mouseOut } 
         last_5_minutes={ this.state.last_5_minutes }
@@ -121,7 +123,7 @@ export default class extends Component {
         last_year={ this.state.last_year }
         isUpdate={ this.state.isUpdate }
         defaultXTickFn={ this.xTick }
-        /> : ""}
+        /> }
     </section>
   }
 }

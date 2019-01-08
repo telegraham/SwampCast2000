@@ -86,15 +86,19 @@ export default class extends React.PureComponent {
     return classes.join(" ")
   }
 
+  round(float) {
+    return (Math.round(float * 10) / 10).toFixed(1)
+  }
+
   render(){
     const datum = this.props.hover || this.props.latest;
     return (<div ref={ this.wrapperRef } className={ this.className(datum) }>
     {
       datum.time ? (<dl className="big-number">
         <dt>Temperature </dt>
-        <dd className="temperature">{ Math.round(datum.temperature) }° { this.props.hover ? "" : this.diff("temperature") }</dd>
+        <dd className="temperature">{ this.round(datum.temperature) }° { this.props.hover ? "" : this.diff("temperature") }</dd>
         <dt>Humidity</dt>
-        <dd className="humidity">{ Math.round(datum.humidity) }% { this.props.hover ? "" : this.diff("humidity") }</dd>
+        <dd className="humidity">{ this.round(datum.humidity) }% { this.props.hover ? "" : this.diff("humidity") }</dd>
         <dt>Time</dt>
         <dd className="time">{ datum.timeString || this.props.xTick(datum.time) }</dd>
       </dl>) : ""
