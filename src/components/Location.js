@@ -97,7 +97,7 @@ export default class extends Component {
         return { }
     })
   }
-
+  
   render(){
     const { location } = this.props;
     return <section>

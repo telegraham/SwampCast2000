@@ -47,7 +47,7 @@ export default class extends React.PureComponent {
     const year = dateObject.getFullYear();
     const month = MONTHS[dateObject.getMonth()];
     const day = dateObject.getDate();
-    return [month, day, year].join(" ")
+    return [month, day + ",", year].join(" ")
   }
 
   render(){ 
@@ -59,13 +59,13 @@ export default class extends React.PureComponent {
         <Graph title="This hour" xTickFn={ this.props.defaultXTickFn } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_hour } tickValues={ [ 50,  30, 10] } />
       </li>
       <li> 
-        <Graph title="Last 24 hours" xTickFn={ this.timeOfDay } xTickFnLong={ this.timeOfDayLong } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.today }  />
+        <Graph title="Last 24 hours" xTickFn={ this.timeOfDay } xTickFnLong={ this.timeOfDayLong } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.today } range={ [ (new Date().getTime() - (24 * 60 * 60 * 1000)), new Date().getTime() ] }  />
       </li>
       <li>
         <Graph title="Last week" xTickFn={ this.dayOfWeek } xTickFnLong={ this.dayOfWeekLong } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_week }  range={ [ (new Date().getTime() - (7 * 24 * 60 * 60 * 1000)), new Date().getTime() ] } tickCount={ 6 } />
       </li>
       <li>
-        <Graph title="Last month" xTickFn={ this.date } xTickFnLong={ this.date } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_month }  />
+        <Graph title="Last month" xTickFn={ this.date } xTickFnLong={ this.date } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_month } />
       </li>
       <li>
         <Graph title="Last year" xTickFn={ this.monthYear } xTickFnLong={ this.fullDate } mouseOver={ this.props.mouseOver } mouseOut={ this.props.mouseOut } data={ this.props.last_year } range={ [ (new Date().getTime() - (365 * 24 * 60 * 60 * 1000)), new Date().getTime() ] } tickCount={ 6 }   />
